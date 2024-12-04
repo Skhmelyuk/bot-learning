@@ -1,0 +1,19 @@
+{
+  "name": "bot-learning",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "Serhii Khmelyuk",
+  "license": "ISC",
+  "description": "learning bot frontend and backend development",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "grammy": "^1.29.0",
+    "nodemon": "^3.1.4",
+    "random-js": "^2.1.0"
+  }
+}
