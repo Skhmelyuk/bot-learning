@@ -4,3 +4,4 @@ node_modules
 .dockerignore
 src/images
 src/json-stats
+.env
