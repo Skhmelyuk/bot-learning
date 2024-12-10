@@ -9,6 +9,7 @@ const {
 
 const { getRandomQuestion, getCorrectAnswer } = require("./modules/utils");
 const { updateUserStats } = require("./modules/stat");
+const { getChatGPTResponse } = require("./modules/chatgpt");
 
 const bot = new Bot(process.env.BOT_API_KEY);
 
@@ -21,11 +22,13 @@ bot.command("start", async (ctx) => {
     .row()
     .text("React")
     .text("Angular")
+    .row()
+    .text("Спитати ChatGPT")
     .resized();
   await ctx.reply(
-    "Привіт! Я Frontend-бот. 👦 \nЯ допоможу тобі у підготовці до інтервью по фронтенду."
+    "Привіт! Я Frontend-бот. \nЯ допоможу тобі у підготовці до інтервью по фронтенду."
   );
-  await ctx.reply("Обери тему, яка тебе цікавить 👇", {
+  await ctx.reply("Обери тему, яка тебе цікавить ", {
     reply_markup: startKeyboard,
   });
 });
@@ -65,6 +68,27 @@ bot.hears(["HTML", "CSS", "JavaScript", "React", "Angular"], async (ctx) => {
   });
 });
 
+bot.hears("Спитати ChatGPT", async (ctx) => {
+  await ctx.reply(
+    "Напишіть ваше запитання, і я передам його до ChatGPT. Додайте префікс '/ask' перед вашим запитанням, наприклад:\n/ask Що таке замикання в JavaScript?"
+  );
+});
+
+bot.command("ask", async (ctx) => {
+  const question = ctx.message.text.replace("/ask", "").trim();
+  if (!question) {
+    await ctx.reply("Будь ласка, додайте ваше запитання після команди /ask");
+    return;
+  }
+
+  await ctx.reply("Думаю над відповіддю...");
+  const response = await getChatGPTResponse(question);
+  await ctx.reply(response, {
+    parse_mode: "HTML",
+    disable_web_page_preview: true,
+  });
+});
+
 bot.on("callback_query:data", async (ctx) => {
   const callbackData = JSON.parse(ctx.callbackQuery.data);
   if (!callbackData.type.includes("option")) {
@@ -78,7 +102,7 @@ bot.on("callback_query:data", async (ctx) => {
   }
 
   if (callbackData.isCorrect) {
-    await ctx.reply("Вірно! 🎉");
+    await ctx.reply("Вірно! ");
     await ctx.answerCallbackQuery();
     return;
   }

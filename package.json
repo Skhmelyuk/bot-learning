@@ -11,9 +11,11 @@
   "license": "ISC",
   "description": "learning bot frontend and backend development",
   "dependencies": {
+    "axios": "^1.7.9",
     "dotenv": "^16.4.5",
     "grammy": "^1.29.0",
     "nodemon": "^3.1.4",
+    "openai": "^4.76.0",
     "random-js": "^2.1.0"
   }
 }
